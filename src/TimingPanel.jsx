@@ -45,12 +45,14 @@ export default function TimingPanel({ project, updateActive, setStep, mediaBlob 
   }, [showClearModal, tapIdx, lines])
 
   function tap() {
+    const OFFSET = 0.1 // 100 ms
+
     if (!mediaRef.current) {
       alert('Load a media file first.')
       return
     }
     if (tapIdx >= lines.length) return
-    setTimeTo(tapIdx, mediaRef.current.currentTime)
+    setTimeTo(tapIdx, Math.max(0, mediaRef.current.currentTime - OFFSET))
     setTapIdx(i => i + 1)
   }
 
