@@ -4,7 +4,9 @@ import s from './panels.module.css'
 
 export default function PreviewPanel({ project, setStep, mediaBlob }) {
   const mediaRef = useRef(null)
-  const [cur, setCur] = useState({ prev: '', cur: '♪ Press play to start ♪' })
+  const [cur, setCur] = useState({
+    cur: '♪ Press play to start ♪',
+  })
   const [flash, setFlash] = useState(false)
 
   const sorted = [...project.lines]
@@ -13,6 +15,7 @@ export default function PreviewPanel({ project, setStep, mediaBlob }) {
 
   function onTimeUpdate() {
     if (!mediaRef.current) return
+
     const t = mediaRef.current.currentTime
     let curIdx = -1
 
@@ -20,12 +23,11 @@ export default function PreviewPanel({ project, setStep, mediaBlob }) {
       if (sorted[i].time <= t) curIdx = i
     }
 
-    const prevLine = curIdx > 0 ? sorted[curIdx - 1].text : ''
     const currentLine = curIdx >= 0 ? sorted[curIdx].text : '♪'
+
     setCur(prevState => {
       if (prevState.cur !== currentLine) setFlash(true)
       return {
-        prev: prevLine,
         cur: currentLine,
       }
     })
@@ -42,18 +44,33 @@ export default function PreviewPanel({ project, setStep, mediaBlob }) {
       <h2>Preview</h2>
       <p className={s.sub}>Watch your lyrics follow along in real time.</p>
 
-      {/* Karaoke stage */}
       <div className={s.stage}>
-        <div className={s.stagePrev}>{cur.prev}</div>
-        <div className={`${s.stageCur} ${flash ? s.flash : ''}`}>{cur.cur}</div>
+        <div className={`${s.stageCur} ${flash ? s.flash : ''}`}>
+          {cur.cur}
+        </div>
       </div>
 
-      {/* Player */}
       <div className={s.card}>
         {mediaBlob
           ? mediaBlob.type.startsWith('video')
-            ? <video ref={mediaRef} src={mediaBlob.url} controls className={s.video} onTimeUpdate={onTimeUpdate} />
-            : <audio ref={mediaRef} src={mediaBlob.url} controls className={s.audio} onTimeUpdate={onTimeUpdate} />
+            ? (
+              <video
+                ref={mediaRef}
+                src={mediaBlob.url}
+                controls
+                className={s.video}
+                onTimeUpdate={onTimeUpdate}
+              />
+            )
+            : (
+              <audio
+                ref={mediaRef}
+                src={mediaBlob.url}
+                controls
+                className={s.audio}
+                onTimeUpdate={onTimeUpdate}
+              />
+            )
           : <p className={s.noMedia}>No media loaded — go to Setup first.</p>
         }
       </div>

@@ -3,10 +3,10 @@ import { Sun, Moon, Plus, Trash2, Music2, Pencil, Check } from 'lucide-react'
 import s from './Sidebar.module.css'
 
 const STEPS = [
-  { id: 'setup',   label: 'Setup' },
-  { id: 'timing',  label: 'Timing' },
+  { id: 'setup', label: 'Setup' },
+  { id: 'timing', label: 'Timing' },
   { id: 'preview', label: 'Preview' },
-  { id: 'export',  label: 'Export' },
+  { id: 'export', label: 'Export' },
 ]
 
 export default function Sidebar({
@@ -16,7 +16,7 @@ export default function Sidebar({
   theme, toggleTheme,
 }) {
   const [editingId, setEditingId] = useState(null)
-  const [editVal, setEditVal]     = useState('')
+  const [editVal, setEditVal] = useState('')
 
   function startRename(p, e) {
     e.stopPropagation()
@@ -32,7 +32,10 @@ export default function Sidebar({
   return (
     <aside className={s.sidebar}>
       <div className={s.head}>
-        <span className={s.logo}>Lyrics<em>Sync</em></span>
+        <div className={s.brand}>
+          <img src="/logo.png" alt="logo" className={s.brandLogo} />
+          <span className={s.logo}>Lyrics<em>Sync</em></span>
+        </div>
         <button className={s.themeBtn} onClick={toggleTheme} title="Toggle theme">
           {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
         </button>

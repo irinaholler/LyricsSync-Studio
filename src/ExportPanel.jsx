@@ -648,7 +648,6 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
 
                       <div className={s.previewEmpty}>
                         <div className={s.previewEmptyIcon}>♪</div>
-                        <div className={s.previewEmptyText}>Lyrics</div>
                       </div>
                     </div>
                   </div>

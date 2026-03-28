@@ -22,12 +22,27 @@
   flex-shrink: 0;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandLogo {
+  width: 28px;
+  height: 28px;
+  opacity: 0.85;
+}
+
 .logo {
   font-family: "Instrument Serif", serif;
   font-size: 2rem;
   line-height: 1;
   letter-spacing: 0.035em;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 .logo em {
   color: var(--accent);
