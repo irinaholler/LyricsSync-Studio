@@ -33,7 +33,7 @@ export default function Sidebar({
     <aside className={s.sidebar}>
       <div className={s.head}>
         <div className={s.brand}>
-          <img src="/logo.png" alt="logo" className={s.brandLogo} />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="logo" className={s.brandLogo} />
           <span className={s.logo}>Lyrics<em>Sync</em></span>
         </div>
         <button className={s.themeBtn} onClick={toggleTheme} title="Toggle theme">

@@ -1,21 +1,37 @@
 # LyricsSync Studio
 
-A project for creating stylish and customizable lyrics videos.
+A lightweight tool for creating stylish, customizable lyric videos directly in your browser.
 
-## README
+## Overview
 
-This repository contains files and resources for designing lyrics videos.
+LyricsSync Studio lets you sync lyrics to music, preview them in real time, and export your work as a ready-to-use lyric video — all without uploading anything. Everything runs locally on your device.
 
-The final downloaded video is provided in **MP4** format.  
-This format can also be converted into other video formats, such as **AVI, MOV, MKV,** or **WEBM**, depending on your needs.
+## Export Format
 
-## Why MP4?
+The exported video is generated in **WEBM** format.
 
-MP4 is the default format because it is one of the most compatible video formats across devices, browsers, and platforms.
+WEBM is supported in modern browsers and offers efficient compression with high quality. It is ideal for fast, local video generation directly in the browser.
+
+> If you need MP4 (for platforms like Instagram or TikTok), you can easily convert the exported WEBM file using tools like HandBrake, FFmpeg, or online converters.
+
+## Why WEBM?
+
+Browser-based video rendering relies on the MediaRecorder API, which natively supports WEBM across modern browsers like Chrome and Edge. This allows the app to:
+
+- Render video locally (no uploads)
+- Keep your media private
+- Avoid server-side processing
 
 ## Features
 
-- Create lyrics videos
-- Customize text and visual style
-- Export finished videos
-- Convert videos to other formats
+- Sync lyrics line-by-line with precise timing
+- Real-time preview with animated text
+- Customizable visual style and layout
+- Export lyric videos directly in the browser
+- Download lyrics as `.lrc` or `.srt`
+
+## Notes
+
+- Video export works best in **Chrome or Edge**
+- Safari and some mobile browsers have limited support for video export
+- All processing happens locally — your files are never uploaded

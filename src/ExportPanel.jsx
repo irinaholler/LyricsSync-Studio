@@ -167,10 +167,16 @@ function drawFrame(ctx, opts) {
   if (hasTitle) {
     const titleFontSize = Math.max(24, Math.round(width * 0.028))
     const titleLineHeight = Math.round(titleFontSize * 1.22)
-    ctx.fillStyle = 'rgba(255,255,255,0.82)'
+
+    ctx.fillStyle = 'rgba(245, 241, 232, 0.68)'
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.35)'
+    ctx.shadowBlur = 18
     ctx.font = `500 ${titleFontSize}px Inter, sans-serif`
+
     const titleLines = wrapText(ctx, songTitle.trim(), width * 0.72).slice(0, 2)
     drawCenteredLines(ctx, titleLines, centerX, height * 0.095, titleLineHeight)
+
+    ctx.shadowBlur = 0
   }
 
   ctx.fillStyle = 'rgba(255,255,255,0.28)'
@@ -362,8 +368,8 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
       return
     }
 
-    if (!window.MediaRecorder || !window.AudioContext) {
-      alert('This browser does not support video + audio export here.')
+    if (!window.MediaRecorder || !MediaRecorder.isTypeSupported('video/webm')) {
+      alert('Video export is supported in Chrome or Edge. This browser is not supported yet.')
       return
     }
 
@@ -441,9 +447,19 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
 
       renderRef.current.stream = combinedStream
 
-      const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
-        ? 'video/webm;codecs=vp9,opus'
-        : 'video/webm;codecs=vp8,opus'
+      const supportedMimeTypes = [
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
+        'video/webm',
+      ]
+
+      const mimeType = supportedMimeTypes.find(type =>
+        MediaRecorder.isTypeSupported(type)
+      )
+
+      if (!mimeType) {
+        throw new Error('This browser does not support video export in WebM format.')
+      }
 
       const recorder = new MediaRecorder(combinedStream, {
         mimeType,
@@ -525,8 +541,8 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
         setRenderStatus('Render cancelled')
       }
     } catch (err) {
-      console.error(err)
-      alert('Video export failed. Please try again.')
+      console.error('Video export failed:', err)
+      alert(`Video export failed: ${err?.message || err}`)
       setRenderStatus('')
     } finally {
       cleanupRender()
@@ -641,14 +657,8 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
                       <div className={s.previewMiniTitle}>{songTitle}</div>
                     )}
 
-                    <div className={s.previewMiniOverlay}>
-                      {showSongTitle && songTitle.trim() && (
-                        <div className={s.previewMiniTitle}>{songTitle}</div>
-                      )}
-
-                      <div className={s.previewEmpty}>
-                        <div className={s.previewEmptyIcon}>♪</div>
-                      </div>
+                    <div className={s.previewEmpty}>
+                      <div className={s.previewEmptyIcon}>♪</div>
                     </div>
                   </div>
                 </div>
@@ -663,23 +673,6 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
           )}
 
           <div className={s.exportActions}>
-            <div className={s.row}>
-              <button
-                className={`${s.btn} ${s.btnAccent}`}
-                onClick={exportLyricVideo}
-                disabled={!sorted.length || !mediaBlob || isRenderingVideo}
-              >
-                <Video size={14} />
-                {isRenderingVideo ? 'Rendering video…' : 'Render lyric video (.webm)'}
-              </button>
-
-              {isRenderingVideo && (
-                <button className={s.btn} onClick={cancelRender}>
-                  <X size={14} /> Cancel render
-                </button>
-              )}
-            </div>
-
             {isRenderingVideo && (
               <div className={s.renderNotice}>
                 <div className={s.renderNoticeTop}>
@@ -699,11 +692,22 @@ export default function ExportPanel({ project, setStep, mediaBlob }) {
               </div>
             )}
 
-            {!isRenderingVideo && renderStatus && (
-              <p className={s.hint} style={{ marginTop: 12 }}>
-                {renderStatus}
-              </p>
-            )}
+            <div className={s.row}>
+              <button
+                className={`${s.btn} ${s.btnAccent}`}
+                onClick={exportLyricVideo}
+                disabled={!sorted.length || !mediaBlob || isRenderingVideo}
+              >
+                <Video size={14} />
+                {isRenderingVideo ? 'Rendering video…' : 'Render lyric video (.webm)'}
+              </button>
+
+              {isRenderingVideo && (
+                <button className={s.btn} onClick={cancelRender}>
+                  <X size={14} /> Cancel render
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
