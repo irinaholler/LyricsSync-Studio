@@ -253,14 +253,9 @@ h2 {
   text-align: right;
   outline: none;
   flex-shrink: 0;
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
 
-.timeInput::-webkit-outer-spin-button,
-.timeInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  appearance: auto;
+  -moz-appearance: auto;
 }
 .timeInput:focus {
   border-color: var(--border2);
